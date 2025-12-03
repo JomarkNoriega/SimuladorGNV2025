@@ -1,24 +1,24 @@
-# Simulador GNV (Vite + React + TS)
+# Simulador GNV 2025 (Vite + React + TS)
 
-Cotizador rápido con actividad → plazo → modalidad y tabla de tarifas embebida.
+Cotizador simple basado en tabla (Actividad → Plazo → Modalidad) con % Recaudo.
+- Sin dependencias visuales (shadcn) para facilitar despliegue en GitHub Pages o Vercel.
+- Datos embebidos en `src/App.tsx` (const `TARIFF`).
 
-## Cómo correr local
+## Correr local
 ```bash
 npm install
 npm run dev
 ```
 
-## Deploy en Vercel
-1) Crea un repo en GitHub y sube este código:
+## Build
 ```bash
-git init
-git add .
-git commit -m "init simulador gnv"
-git branch -M main
-git remote add origin https://github.com/<tu-usuario>/<tu-repo>.git
-git push -u origin main
+npm run build
+npm run preview
 ```
-2) Entra a https://vercel.com → New Project → importa tu repo → Deploy.
 
-## Deploy en GitHub Pages (opcional)
-- Instala gh-pages y publica `dist`.
+## GitHub Pages
+En `vite.config.ts` define:
+```ts
+export default defineConfig({ plugins:[react()], base:'/NOMBRE_DEL_REPO/' })
+```
+Luego compila y publica `dist/` con gh-pages o Actions.

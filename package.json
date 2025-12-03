@@ -1,7 +1,7 @@
 {
-  "name": "simulador-gnv",
-  "private": true,
+  "name": "simulador-gnv-2025",
   "version": "1.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,17 +9,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "recharts": "^2.12.7",
-    "lucide-react": "^0.468.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.12.7"
   },
   "devDependencies": {
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "@types/node": "^22.7.5",
-    "typescript": "^5.6.3",
-    "vite": "^5.4.10",
-    "@vitejs/plugin-react": "^4.3.2"
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.2",
+    "vite": "^5.2.0"
   }
 }
