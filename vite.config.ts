@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-// Ajusta 'base' si lo vas a publicar en GitHub Pages: '/NOMBRE_DEL_REPO/'
+// Si publicas en GitHub Pages, descomenta y pon tu repo:
+// export default defineConfig({ base: "/NOMBRE_DEL_REPO/", plugins: [react()] });
 export default defineConfig({
-  plugins: [react()],
-  // base: '/SimuladorGNV20251/',
-})
+  plugins: [react()]
+});
