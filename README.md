@@ -10,4 +10,4 @@ npm run dev
 npm run build
 npm run preview
 ```
-Si publicas en GitHub Pages, edita `vite.config.ts` y define `base: "/NOMBRE_DEL_REPO/"`.
+Si publicas en GitHub Pages, edita `vite.config.ts` y define `base: "/SimuladorGNV2025/"`.
