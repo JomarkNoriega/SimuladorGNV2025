@@ -353,7 +353,7 @@ const OFFER_RULES = [
   { segmentos: ["NA"], edadMin: 21, edadMax: 25, grupos: ["Grupo 1", "Grupo 2", "TODOS"], montoMin: 500, montoMax: 500, plazoMin: 6, plazoMax: 6, factorOferta: 0.50, factorMaximo: 0.50 },
 ];
 
-const APP_VERSION = "2026.08.17.v1";
+const APP_VERSION = "2026.08.19.v1";
 
 const DNI_WEIGHTS = [3, 2, 7, 6, 5, 4, 3, 2];
 const DNI_NUMBER_MAP = "67890123456";
@@ -558,30 +558,55 @@ export default function App() {
     setConsultando(true);
 
     try {
-      const auth = await postJson("/api/validar-usuario", {
-        dni: dniUsuario,
-        clave: claveUsuario,
-      });
+      let token = sessionToken;
 
-      if (auth.forceChange) {
-        setSessionToken("");
-        setClaveActualCambio(claveUsuario);
-        setMostrarCambioClave(true);
-        showMessage(
-          "warning",
-          auth.reason === "EXPIRED"
-            ? "Su clave ha vencido. Debe actualizarla antes de continuar."
-            : "Debe cambiar su clave antes de continuar."
-        );
-        return;
+      // Si ya existe una sesión, solo se valida localmente en el backend.
+      // No se vuelve a consultar Google Sheets ni se reenvía la clave.
+      if (token) {
+        try {
+          const sessionCheck = await postJson("/api/validar-sesion", {
+            sessionToken: token,
+          });
+
+          if (!sessionCheck.ok) {
+            token = "";
+            setSessionToken("");
+          }
+        } catch {
+          token = "";
+          setSessionToken("");
+        }
       }
 
-      setSessionToken(auth.token || "");
-      setConsultasRestantes(
-        Number.isFinite(Number(auth.consultasRestantes))
-          ? Number(auth.consultasRestantes)
-          : null
-      );
+      // Solo autenticar nuevamente contra Google Sheets cuando no exista
+      // una sesión válida (primer ingreso, recarga de página o sesión vencida).
+      if (!token) {
+        const auth = await postJson("/api/validar-usuario", {
+          dni: dniUsuario,
+          clave: claveUsuario,
+        });
+
+        if (auth.forceChange) {
+          setSessionToken("");
+          setClaveActualCambio(claveUsuario);
+          setMostrarCambioClave(true);
+          showMessage(
+            "warning",
+            auth.reason === "EXPIRED"
+              ? "Su clave ha vencido. Debe actualizarla antes de continuar."
+              : "Debe cambiar su clave antes de continuar."
+          );
+          return;
+        }
+
+        token = auth.token || "";
+        setSessionToken(token);
+        setConsultasRestantes(
+          Number.isFinite(Number(auth.consultasRestantes))
+            ? Number(auth.consultasRestantes)
+            : null
+        );
+      }
 
       const antiguedad = currentYear - anioModelo;
       const grupoMarca = VEHICLE_BRAND_GROUP[marcaVehiculo];
