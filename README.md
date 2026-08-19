@@ -157,3 +157,10 @@ Ninguna de estas variables debe tener prefijo `VITE_`.
 
 Se incluye `config/Usuarios_GNV_Control_Claves.xlsx` con los 381 DNI cargados.
 Actualmente esos usuarios tienen `LimiteDiario = 500`, por lo que ese valor actúa como configuración individual. Si se desea administrar el límite únicamente desde `Parametros.LimiteDiarioDefault`, dejar vacía la columna `LimiteDiario` de los usuarios que deban heredar el valor global.
+
+
+## Cambios v12 - 2026.08.19.v1
+- La consulta de oferta reutiliza la sesión generada después del login/cambio de clave.
+- Ya no vuelve a enviar la contraseña ni a consultar Google Sheets en cada "Consultar oferta".
+- Se agregó `/api/validar-sesion.js`, que valida el token firmado únicamente en el backend.
+- Si la sesión no existe o venció, recién entonces se ejecuta `/api/validar-usuario`.
