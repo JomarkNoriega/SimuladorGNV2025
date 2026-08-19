@@ -1,0 +1,5 @@
+Parametro,Valor,Descripcion
+DiasVigenciaClave,90,Días de vigencia de la clave antes de exigir cambio.
+LimiteDiarioDefault,500,Máximo diario si el usuario no tiene límite individual.
+MaxIntentosFallidos,5,Intentos fallidos antes de bloquear al usuario.
+ForzarCambioClaveInicial,SI,Los usuarios sin clave propia deben cambiar la clave inicial.
