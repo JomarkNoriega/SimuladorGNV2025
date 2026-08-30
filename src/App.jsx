@@ -353,7 +353,7 @@ const OFFER_RULES = [
   { segmentos: ["NA"], edadMin: 21, edadMax: 25, grupos: ["Grupo 1", "Grupo 2", "TODOS"], montoMin: 500, montoMax: 500, plazoMin: 6, plazoMax: 6, factorOferta: 0.50, factorMaximo: 0.50 },
 ];
 
-const APP_VERSION = "2026.08.19.v1";
+const APP_VERSION = "2026.08.29.v1";
 
 const DNI_WEIGHTS = [3, 2, 7, 6, 5, 4, 3, 2];
 const DNI_NUMBER_MAP = "67890123456";
@@ -454,6 +454,7 @@ async function postJson(url, body) {
 
 export default function App() {
   const currentYear = new Date().getFullYear();
+  const maxVehicleYear = Math.max(currentYear, 2027);
 
   const [dniUsuario, setDniUsuario] = useState("");
   const [claveUsuario, setClaveUsuario] = useState("");
@@ -526,7 +527,7 @@ export default function App() {
     if (!claveUsuario) {
       return "Ingrese la clave del usuario.";
     }
-    if (!["Campo", "Base", "Referido"].includes(origenConsulta)) {
+    if (!["Campo/Agencia", "Base", "Referido"].includes(origenConsulta)) {
       return "Seleccione el origen de consulta.";
     }
     if (!/^\d{8}$/.test(dniCliente)) {
@@ -535,7 +536,7 @@ export default function App() {
     if (!VEHICLE_BRAND_GROUP[marcaVehiculo]) {
       return "Seleccione una marca válida del catálogo.";
     }
-    if (!Number.isInteger(anioModelo) || anioModelo < currentYear - 25 || anioModelo > currentYear) {
+    if (!Number.isInteger(anioModelo) || anioModelo < currentYear - 25 || anioModelo > maxVehicleYear) {
       return "Ingrese un año de vehículo válido.";
     }
     if (!/^[A-Z0-9]{6}$/.test(placa)) {
@@ -608,7 +609,7 @@ export default function App() {
         );
       }
 
-      const antiguedad = currentYear - anioModelo;
+      const antiguedad = Math.max(0, currentYear - anioModelo);
       const grupoMarca = VEHICLE_BRAND_GROUP[marcaVehiculo];
       const rule = getOfferRule(segmento, grupoMarca, antiguedad);
 
@@ -648,6 +649,26 @@ export default function App() {
     } finally {
       setConsultando(false);
     }
+  };
+
+
+  const nuevaConsulta = () => {
+    // Mantiene identidad y sesión del usuario; limpia los datos de la operación.
+    setOrigenConsulta("");
+    setDniCliente("");
+    setSegmento("VIP");
+    setMarcaVehiculo("");
+    setAnioModelo(currentYear);
+    setPlaca("");
+    setOfertaConsultada(null);
+    setMontoSolicitado(1000);
+    setPlazo(12);
+    setFactorRecaudo(85);
+    setSeguroObliga("Vida Integral/Desgravamen");
+    setSeguroVol("Solidario");
+    setResultado(null);
+    setMensaje(null);
+    setAvisoClave("");
   };
 
   const cambiarClave = async () => {
@@ -818,179 +839,202 @@ export default function App() {
       <section style={stageStyle}>
         <h3>I. Datos</h3>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: 14,
-          }}
-        >
-          <label style={labelStyle}>
-            DNI del usuario
-            <input
-              value={dniUsuario}
-              inputMode="numeric"
-              maxLength={8}
-              onChange={(e) => {
-                setDniUsuario(onlyDigits(e.target.value));
-                setSessionToken("");
-                setOfertaConsultada(null);
-                setResultado(null);
-              }}
-              style={inputStyle}
-              placeholder="8 dígitos"
-            />
-          </label>
+        <div style={{ display: "grid", gap: 14 }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, minmax(240px, 1fr))",
+              gap: 14,
+            }}
+          >
+            <label style={labelStyle}>
+              DNI del usuario
+              <input
+                value={dniUsuario}
+                inputMode="numeric"
+                maxLength={8}
+                onChange={(e) => {
+                  setDniUsuario(onlyDigits(e.target.value));
+                  setSessionToken("");
+                  setOfertaConsultada(null);
+                  setResultado(null);
+                }}
+                style={inputStyle}
+                placeholder="8 dígitos"
+              />
+            </label>
 
-          <label style={labelStyle}>
-            Clave del usuario
-            <input
-              type="password"
-              value={claveUsuario}
-              maxLength={64}
-              onChange={(e) => {
-                setClaveUsuario(e.target.value);
-                setSessionToken("");
-                setOfertaConsultada(null);
-                setResultado(null);
-              }}
-              style={inputStyle}
-              placeholder="Ingrese su clave"
-              autoComplete="current-password"
-            />
-            <button
-              type="button"
-              onClick={() => {
-                setClaveActualCambio(claveUsuario);
-                setMostrarCambioClave(true);
-                setMensaje(null);
-                setAvisoClave("");
-              }}
-              style={{
-                marginTop: 7,
-                border: 0,
-                background: "transparent",
-                color: "#0b5cab",
-                padding: 0,
-                cursor: "pointer",
-                fontWeight: 650,
-              }}
-            >
-              Cambiar clave
-            </button>
-          </label>
+            <label style={labelStyle}>
+              Clave del usuario
+              <input
+                type="password"
+                value={claveUsuario}
+                maxLength={64}
+                onChange={(e) => {
+                  setClaveUsuario(e.target.value);
+                  setSessionToken("");
+                  setOfertaConsultada(null);
+                  setResultado(null);
+                }}
+                style={inputStyle}
+                placeholder="Ingrese su clave"
+                autoComplete="current-password"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  setClaveActualCambio(claveUsuario);
+                  setMostrarCambioClave(true);
+                  setMensaje(null);
+                  setAvisoClave("");
+                }}
+                style={{
+                  marginTop: 7,
+                  border: 0,
+                  background: "transparent",
+                  color: "#0b5cab",
+                  padding: 0,
+                  cursor: "pointer",
+                  fontWeight: 650,
+                }}
+              >
+                Cambiar clave
+              </button>
+            </label>
+          </div>
 
-          <label style={labelStyle}>
-            Origen de consulta *
-            <select
-              value={origenConsulta}
-              onChange={(e) => {
-                setOrigenConsulta(e.target.value);
-                setOfertaConsultada(null);
-                setResultado(null);
-              }}
-              style={inputStyle}
-              required
-            >
-              <option value="">Seleccione...</option>
-              <option value="Campo">Campo</option>
-              <option value="Base">Base</option>
-              <option value="Referido">Referido</option>
-            </select>
-          </label>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, minmax(200px, 1fr))",
+              gap: 14,
+            }}
+          >
+            <label style={labelStyle}>
+              DNI del cliente
+              <input
+                value={dniCliente}
+                inputMode="numeric"
+                maxLength={8}
+                onChange={(e) => setDniCliente(onlyDigits(e.target.value))}
+                style={inputStyle}
+                placeholder="8 dígitos"
+              />
+            </label>
 
-          <label style={labelStyle}>
-            DNI del cliente
-            <input
-              value={dniCliente}
-              inputMode="numeric"
-              maxLength={8}
-              onChange={(e) => setDniCliente(onlyDigits(e.target.value))}
-              style={inputStyle}
-              placeholder="8 dígitos"
-            />
-          </label>
+            <label style={labelStyle}>
+              Origen de consulta *
+              <select
+                value={origenConsulta}
+                onChange={(e) => {
+                  setOrigenConsulta(e.target.value);
+                  setOfertaConsultada(null);
+                  setResultado(null);
+                }}
+                style={inputStyle}
+                required
+              >
+                <option value="">Seleccione...</option>
+                <option value="Campo/Agencia">Campo/Agencia</option>
+                <option value="Base">Base</option>
+                <option value="Referido">Referido</option>
+              </select>
+            </label>
 
-          <label style={labelStyle}>
-            Segmento cliente
-            <select
-              value={segmento}
-              onChange={(e) => setSegmento(e.target.value)}
-              style={inputStyle}
-            >
-              {["VIP", "PREFERENTE", "NORMAL", "INCLUSION", "EVALUACION", "NA"].map(
-                (item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                )
-              )}
-            </select>
-          </label>
+            <label style={labelStyle}>
+              Segmento cliente
+              <select
+                value={segmento}
+                onChange={(e) => setSegmento(e.target.value)}
+                style={inputStyle}
+              >
+                {["VIP", "PREFERENTE", "NORMAL", "INCLUSION", "EVALUACION", "NA"].map(
+                  (item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  )
+                )}
+              </select>
+            </label>
+          </div>
 
-          <label style={labelStyle}>
-            Marca
-            <input
-              type="text"
-              list="vehicle-brand-catalog"
-              value={marcaVehiculo}
-              onChange={(e) =>
-                setMarcaVehiculo(e.target.value.toUpperCase())
-              }
-              onBlur={() =>
-                setMarcaVehiculo(marcaVehiculo.trim().toUpperCase())
-              }
-              style={inputStyle}
-              placeholder="Buscar marca..."
-            />
-            <datalist id="vehicle-brand-catalog">
-              {VEHICLE_BRANDS.map((marca) => (
-                <option key={marca} value={marca} />
-              ))}
-            </datalist>
-          </label>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, minmax(200px, 1fr))",
+              gap: 14,
+            }}
+          >
+            <label style={labelStyle}>
+              Placa
+              <input
+                value={placa}
+                maxLength={6}
+                onChange={(e) => setPlaca(normalizePlate(e.target.value))}
+                style={inputStyle}
+                placeholder="Ej. ATI219"
+              />
+            </label>
 
-          <label style={labelStyle}>
-            Año del vehículo
-            <input
-              type="number"
-              min={currentYear - 25}
-              max={currentYear}
-              value={anioModelo}
-              onChange={(e) => setAnioModelo(Number(e.target.value))}
-              style={inputStyle}
-            />
-          </label>
+            <label style={labelStyle}>
+              Marca
+              <input
+                type="text"
+                list="vehicle-brand-catalog"
+                value={marcaVehiculo}
+                onChange={(e) => setMarcaVehiculo(e.target.value.toUpperCase())}
+                onBlur={() => setMarcaVehiculo(marcaVehiculo.trim().toUpperCase())}
+                style={inputStyle}
+                placeholder="Buscar marca..."
+              />
+              <datalist id="vehicle-brand-catalog">
+                {VEHICLE_BRANDS.map((marca) => (
+                  <option key={marca} value={marca} />
+                ))}
+              </datalist>
+            </label>
 
-          <label style={labelStyle}>
-            Placa
-            <input
-              value={placa}
-              maxLength={6}
-              onChange={(e) => setPlaca(normalizePlate(e.target.value))}
-              style={inputStyle}
-              placeholder="Ej. ATI219"
-            />
-          </label>
+            <label style={labelStyle}>
+              Año del vehículo
+              <input
+                type="number"
+                min={currentYear - 25}
+                max={maxVehicleYear}
+                value={anioModelo}
+                onChange={(e) => setAnioModelo(Number(e.target.value))}
+                style={inputStyle}
+              />
+            </label>
+          </div>
         </div>
 
-        <button
-          type="button"
-          onClick={consultarOferta}
-          disabled={consultando}
-          style={{
-            ...buttonStyle,
-            opacity: consultando ? 0.65 : 1,
-          }}
-        >
-          {consultando ? "Consultando..." : "Consultar oferta"}
-        </button>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <button
+            type="button"
+            onClick={consultarOferta}
+            disabled={consultando}
+            style={{
+              ...buttonStyle,
+              opacity: consultando ? 0.65 : 1,
+            }}
+          >
+            {consultando ? "Consultando..." : "Consultar oferta"}
+          </button>
 
-        {consultasRestantes !== null && (
-          <div style={{ marginTop: 10, fontSize: 13, color: "#555" }}>
-            Consultas disponibles hoy: <strong>{consultasRestantes}</strong>
-          </div>
-        )}
+          <button
+            type="button"
+            onClick={nuevaConsulta}
+            disabled={consultando || calculando}
+            style={{
+              ...buttonStyle,
+              background: "#666",
+              opacity: consultando || calculando ? 0.65 : 1,
+            }}
+          >
+            Nueva consulta
+          </button>
+        </div>
         {avisoClave && (
           <div
             style={{
