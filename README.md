@@ -164,3 +164,11 @@ Actualmente esos usuarios tienen `LimiteDiario = 500`, por lo que ese valor act�
 - Ya no vuelve a enviar la contraseña ni a consultar Google Sheets en cada "Consultar oferta".
 - Se agregó `/api/validar-sesion.js`, que valida el token firmado únicamente en el backend.
 - Si la sesión no existe o venció, recién entonces se ejecuta `/api/validar-usuario`.
+
+
+## Cambios v13 - 2026.08.29.v1
+- Reordenamiento de campos principales en 3 filas.
+- Nuevo botón Nueva consulta: conserva DNI/clave/sesión y limpia los datos de la operación.
+- Se oculta el contador visible de consultas; el control diario sigue activo.
+- Origen "Campo" pasa a "Campo/Agencia" en frontend y backend.
+- Se habilita año de vehículo 2027 y se trata su antigüedad como 0 durante 2026.
