@@ -172,3 +172,10 @@ Actualmente esos usuarios tienen `LimiteDiario = 500`, por lo que ese valor act�
 - Se oculta el contador visible de consultas; el control diario sigue activo.
 - Origen "Campo" pasa a "Campo/Agencia" en frontend y backend.
 - Se habilita año de vehículo 2027 y se trata su antigüedad como 0 durante 2026.
+
+
+## Cambios v14 - 2026.08.31.v1
+- Segmento cliente inicia vacío y exige selección.
+- Año del vehículo inicia vacío y conserva soporte hasta 2027.
+- Nueva consulta vuelve a dejar Segmento y Año vacíos.
+- Se agregó botón de ojo para mostrar/ocultar la clave del usuario.
