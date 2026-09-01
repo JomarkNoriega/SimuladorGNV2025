@@ -353,7 +353,7 @@ const OFFER_RULES = [
   { segmentos: ["NA"], edadMin: 21, edadMax: 25, grupos: ["Grupo 1", "Grupo 2", "TODOS"], montoMin: 500, montoMax: 500, plazoMin: 6, plazoMax: 6, factorOferta: 0.50, factorMaximo: 0.50 },
 ];
 
-const APP_VERSION = "2026.08.31.v1";
+const APP_VERSION = "2026.08.31.v2";
 
 const DNI_WEIGHTS = [3, 2, 7, 6, 5, 4, 3, 2];
 const DNI_NUMBER_MAP = "67890123456";
@@ -466,6 +466,9 @@ export default function App() {
   const [claveActualCambio, setClaveActualCambio] = useState("");
   const [nuevaClave, setNuevaClave] = useState("");
   const [confirmarNuevaClave, setConfirmarNuevaClave] = useState("");
+  const [mostrarClaveActualCambio, setMostrarClaveActualCambio] = useState(false);
+  const [mostrarNuevaClave, setMostrarNuevaClave] = useState(false);
+  const [mostrarConfirmarNuevaClave, setMostrarConfirmarNuevaClave] = useState(false);
   const [cambiandoClave, setCambiandoClave] = useState(false);
   const [avisoClave, setAvisoClave] = useState("");
   const [dniCliente, setDniCliente] = useState("");
@@ -1130,33 +1133,183 @@ export default function App() {
           >
             <label style={labelStyle}>
               Clave actual
-              <input
-                type="password"
-                value={claveActualCambio}
-                onChange={(e) => setClaveActualCambio(e.target.value)}
-                style={inputStyle}
-                autoComplete="current-password"
-              />
+              <div style={{ position: "relative" }}>
+                <input
+                  type={mostrarClaveActualCambio ? "text" : "password"}
+                  value={claveActualCambio}
+                  onChange={(e) => setClaveActualCambio(e.target.value)}
+                  style={{ ...inputStyle, paddingRight: 44 }}
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setMostrarClaveActualCambio((value) => !value)}
+                  aria-label={mostrarClaveActualCambio ? "Ocultar clave actual" : "Mostrar clave actual"}
+                  title={mostrarClaveActualCambio ? "Ocultar clave actual" : "Mostrar clave actual"}
+                  style={{
+                    position: "absolute",
+                    right: 9,
+                    top: 14,
+                    width: 30,
+                    height: 30,
+                    border: 0,
+                    background: "transparent",
+                    cursor: "pointer",
+                    padding: 3,
+                    color: "#555",
+                  }}
+                >
+                  {mostrarClaveActualCambio ? (
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                      <path
+                        d="M3 3l18 18M10.6 10.6a2 2 0 002.8 2.8M9.9 4.2A10.7 10.7 0 0112 4c5.5 0 9.5 5.2 9.5 5.2a15.6 15.6 0 01-3.1 3.5M6.6 6.6C4 8.2 2.5 10.2 2.5 10.2S6.5 16 12 16c1 0 2-.2 2.9-.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                      <path
+                        d="M2.5 12S6.5 6 12 6s9.5 6 9.5 6-4 6-9.5 6-9.5-6-9.5-6z"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                      />
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="2.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
             </label>
             <label style={labelStyle}>
               Nueva clave
-              <input
-                type="password"
-                value={nuevaClave}
-                onChange={(e) => setNuevaClave(e.target.value)}
-                style={inputStyle}
-                autoComplete="new-password"
-              />
+              <div style={{ position: "relative" }}>
+                <input
+                  type={mostrarNuevaClave ? "text" : "password"}
+                  value={nuevaClave}
+                  onChange={(e) => setNuevaClave(e.target.value)}
+                  style={{ ...inputStyle, paddingRight: 44 }}
+                  autoComplete="new-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setMostrarNuevaClave((value) => !value)}
+                  aria-label={mostrarNuevaClave ? "Ocultar nueva clave" : "Mostrar nueva clave"}
+                  title={mostrarNuevaClave ? "Ocultar nueva clave" : "Mostrar nueva clave"}
+                  style={{
+                    position: "absolute",
+                    right: 9,
+                    top: 14,
+                    width: 30,
+                    height: 30,
+                    border: 0,
+                    background: "transparent",
+                    cursor: "pointer",
+                    padding: 3,
+                    color: "#555",
+                  }}
+                >
+                  {mostrarNuevaClave ? (
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                      <path
+                        d="M3 3l18 18M10.6 10.6a2 2 0 002.8 2.8M9.9 4.2A10.7 10.7 0 0112 4c5.5 0 9.5 5.2 9.5 5.2a15.6 15.6 0 01-3.1 3.5M6.6 6.6C4 8.2 2.5 10.2 2.5 10.2S6.5 16 12 16c1 0 2-.2 2.9-.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                      <path
+                        d="M2.5 12S6.5 6 12 6s9.5 6 9.5 6-4 6-9.5 6-9.5-6-9.5-6z"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                      />
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="2.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
             </label>
             <label style={labelStyle}>
               Confirmar nueva clave
-              <input
-                type="password"
-                value={confirmarNuevaClave}
-                onChange={(e) => setConfirmarNuevaClave(e.target.value)}
-                style={inputStyle}
-                autoComplete="new-password"
-              />
+              <div style={{ position: "relative" }}>
+                <input
+                  type={mostrarConfirmarNuevaClave ? "text" : "password"}
+                  value={confirmarNuevaClave}
+                  onChange={(e) => setConfirmarNuevaClave(e.target.value)}
+                  style={{ ...inputStyle, paddingRight: 44 }}
+                  autoComplete="new-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setMostrarConfirmarNuevaClave((value) => !value)}
+                  aria-label={mostrarConfirmarNuevaClave ? "Ocultar confirmación de clave" : "Mostrar confirmación de clave"}
+                  title={mostrarConfirmarNuevaClave ? "Ocultar confirmación de clave" : "Mostrar confirmación de clave"}
+                  style={{
+                    position: "absolute",
+                    right: 9,
+                    top: 14,
+                    width: 30,
+                    height: 30,
+                    border: 0,
+                    background: "transparent",
+                    cursor: "pointer",
+                    padding: 3,
+                    color: "#555",
+                  }}
+                >
+                  {mostrarConfirmarNuevaClave ? (
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                      <path
+                        d="M3 3l18 18M10.6 10.6a2 2 0 002.8 2.8M9.9 4.2A10.7 10.7 0 0112 4c5.5 0 9.5 5.2 9.5 5.2a15.6 15.6 0 01-3.1 3.5M6.6 6.6C4 8.2 2.5 10.2 2.5 10.2S6.5 16 12 16c1 0 2-.2 2.9-.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                      <path
+                        d="M2.5 12S6.5 6 12 6s9.5 6 9.5 6-4 6-9.5 6-9.5-6-9.5-6z"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                      />
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="2.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
             </label>
           </div>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
