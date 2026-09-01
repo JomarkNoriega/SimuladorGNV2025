@@ -179,3 +179,7 @@ Actualmente esos usuarios tienen `LimiteDiario = 500`, por lo que ese valor act�
 - Año del vehículo inicia vacío y conserva soporte hasta 2027.
 - Nueva consulta vuelve a dejar Segmento y Año vacíos.
 - Se agregó botón de ojo para mostrar/ocultar la clave del usuario.
+
+
+## Cambios v15 - 2026.08.31.v2
+- Se agregaron íconos de ojo para mostrar/ocultar la clave actual, la nueva clave y la confirmación en el formulario de cambio de clave.
