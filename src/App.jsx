@@ -353,7 +353,7 @@ const OFFER_RULES = [
   { segmentos: ["NA"], edadMin: 21, edadMax: 25, grupos: ["Grupo 1", "Grupo 2", "TODOS"], montoMin: 500, montoMax: 500, plazoMin: 6, plazoMax: 6, factorOferta: 0.50, factorMaximo: 0.50 },
 ];
 
-const APP_VERSION = "2026.08.29.v1";
+const APP_VERSION = "2026.08.31.v1";
 
 const DNI_WEIGHTS = [3, 2, 7, 6, 5, 4, 3, 2];
 const DNI_NUMBER_MAP = "67890123456";
@@ -458,6 +458,7 @@ export default function App() {
 
   const [dniUsuario, setDniUsuario] = useState("");
   const [claveUsuario, setClaveUsuario] = useState("");
+  const [mostrarClaveUsuario, setMostrarClaveUsuario] = useState(false);
   const [origenConsulta, setOrigenConsulta] = useState("");
   const [sessionToken, setSessionToken] = useState("");
   const [consultasRestantes, setConsultasRestantes] = useState(null);
@@ -468,9 +469,9 @@ export default function App() {
   const [cambiandoClave, setCambiandoClave] = useState(false);
   const [avisoClave, setAvisoClave] = useState("");
   const [dniCliente, setDniCliente] = useState("");
-  const [segmento, setSegmento] = useState("VIP");
+  const [segmento, setSegmento] = useState("");
   const [marcaVehiculo, setMarcaVehiculo] = useState("TOYOTA");
-  const [anioModelo, setAnioModelo] = useState(currentYear - 1);
+  const [anioModelo, setAnioModelo] = useState("");
   const [placa, setPlaca] = useState("");
 
   const [ofertaConsultada, setOfertaConsultada] = useState(null);
@@ -532,6 +533,9 @@ export default function App() {
     }
     if (!/^\d{8}$/.test(dniCliente)) {
       return "El DNI del cliente debe contener exactamente 8 dígitos numéricos.";
+    }
+    if (!["VIP", "PREFERENTE", "NORMAL", "INCLUSION", "EVALUACION", "NA"].includes(segmento)) {
+      return "Seleccione el segmento del cliente.";
     }
     if (!VEHICLE_BRAND_GROUP[marcaVehiculo]) {
       return "Seleccione una marca válida del catálogo.";
@@ -656,9 +660,9 @@ export default function App() {
     // Mantiene identidad y sesión del usuario; limpia los datos de la operación.
     setOrigenConsulta("");
     setDniCliente("");
-    setSegmento("VIP");
+    setSegmento("");
     setMarcaVehiculo("");
-    setAnioModelo(currentYear);
+    setAnioModelo("");
     setPlaca("");
     setOfertaConsultada(null);
     setMontoSolicitado(1000);
@@ -866,20 +870,70 @@ export default function App() {
 
             <label style={labelStyle}>
               Clave del usuario
-              <input
-                type="password"
-                value={claveUsuario}
-                maxLength={64}
-                onChange={(e) => {
-                  setClaveUsuario(e.target.value);
-                  setSessionToken("");
-                  setOfertaConsultada(null);
-                  setResultado(null);
-                }}
-                style={inputStyle}
-                placeholder="Ingrese su clave"
-                autoComplete="current-password"
-              />
+              <div style={{ position: "relative" }}>
+                <input
+                  type={mostrarClaveUsuario ? "text" : "password"}
+                  value={claveUsuario}
+                  maxLength={64}
+                  onChange={(e) => {
+                    setClaveUsuario(e.target.value);
+                    setSessionToken("");
+                    setOfertaConsultada(null);
+                    setResultado(null);
+                  }}
+                  style={{ ...inputStyle, paddingRight: 44 }}
+                  placeholder="Ingrese su clave"
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setMostrarClaveUsuario((value) => !value)}
+                  aria-label={mostrarClaveUsuario ? "Ocultar clave" : "Mostrar clave"}
+                  title={mostrarClaveUsuario ? "Ocultar clave" : "Mostrar clave"}
+                  style={{
+                    position: "absolute",
+                    right: 9,
+                    top: 14,
+                    width: 30,
+                    height: 30,
+                    border: 0,
+                    background: "transparent",
+                    cursor: "pointer",
+                    padding: 3,
+                    color: "#555",
+                  }}
+                >
+                  {mostrarClaveUsuario ? (
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                      <path
+                        d="M3 3l18 18M10.6 10.6a2 2 0 002.8 2.8M9.9 4.2A10.7 10.7 0 0112 4c5.5 0 9.5 5.2 9.5 5.2a15.6 15.6 0 01-3.1 3.5M6.6 6.6C4 8.2 2.5 10.2 2.5 10.2S6.5 16 12 16c1 0 2-.2 2.9-.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                      <path
+                        d="M2.5 12S6.5 6 12 6s9.5 6 9.5 6-4 6-9.5 6-9.5-6-9.5-6z"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                      />
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="2.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
               <button
                 type="button"
                 onClick={() => {
@@ -948,6 +1002,7 @@ export default function App() {
                 onChange={(e) => setSegmento(e.target.value)}
                 style={inputStyle}
               >
+                <option value="">Seleccione...</option>
                 {["VIP", "PREFERENTE", "NORMAL", "INCLUSION", "EVALUACION", "NA"].map(
                   (item) => (
                     <option key={item} value={item}>
@@ -1002,8 +1057,9 @@ export default function App() {
                 min={currentYear - 25}
                 max={maxVehicleYear}
                 value={anioModelo}
-                onChange={(e) => setAnioModelo(Number(e.target.value))}
+                onChange={(e) => setAnioModelo(e.target.value === "" ? "" : Number(e.target.value))}
                 style={inputStyle}
+                placeholder="Seleccione año"
               />
             </label>
           </div>
