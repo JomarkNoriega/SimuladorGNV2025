@@ -289,6 +289,10 @@ function reiniciarIntentosFallidos_(dni) {
 }
 
 function registrarConsulta_(data) {
+  // Compatibilidad: normaliza el valor histórico "Campo" al nuevo nombre.
+  if (String(data.origenConsulta || "") === "Campo") {
+    data.origenConsulta = "Campo/Agencia";
+  }
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
 
