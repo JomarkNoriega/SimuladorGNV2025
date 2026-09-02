@@ -183,3 +183,10 @@ Actualmente esos usuarios tienen `LimiteDiario = 500`, por lo que ese valor act�
 
 ## Cambios v15 - 2026.08.31.v2
 - Se agregaron íconos de ojo para mostrar/ocultar la clave actual, la nueva clave y la confirmación en el formulario de cambio de clave.
+
+
+## Cambios v16 - 2026.09.02.v1
+- Origen de consulta ahora separa Campo y Agencia; Base y Referido se mantienen.
+- Al consultar una oferta correctamente se bloquean DNI cliente, origen, segmento, placa, marca y año del vehículo.
+- Nueva consulta limpia esos datos y los vuelve a habilitar.
+- API y Apps Script actualizados para conservar Campo y Agencia como valores independientes.
