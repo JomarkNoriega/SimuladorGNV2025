@@ -353,7 +353,7 @@ const OFFER_RULES = [
   { segmentos: ["NA"], edadMin: 21, edadMax: 25, grupos: ["Grupo 1", "Grupo 2", "TODOS"], montoMin: 500, montoMax: 500, plazoMin: 6, plazoMax: 6, factorOferta: 0.50, factorMaximo: 0.50 },
 ];
 
-const APP_VERSION = "2026.08.31.v2";
+const APP_VERSION = "2026.09.02.v1";
 
 const DNI_WEIGHTS = [3, 2, 7, 6, 5, 4, 3, 2];
 const DNI_NUMBER_MAP = "67890123456";
@@ -531,7 +531,7 @@ export default function App() {
     if (!claveUsuario) {
       return "Ingrese la clave del usuario.";
     }
-    if (!["Campo/Agencia", "Base", "Referido"].includes(origenConsulta)) {
+    if (!["Campo", "Agencia", "Base", "Referido"].includes(origenConsulta)) {
       return "Seleccione el origen de consulta.";
     }
     if (!/^\d{8}$/.test(dniCliente)) {
@@ -974,7 +974,12 @@ export default function App() {
                 inputMode="numeric"
                 maxLength={8}
                 onChange={(e) => setDniCliente(onlyDigits(e.target.value))}
-                style={inputStyle}
+                disabled={Boolean(ofertaConsultada)}
+                style={{
+                  ...inputStyle,
+                  background: ofertaConsultada ? "#f2f2f2" : "#fff",
+                  cursor: ofertaConsultada ? "not-allowed" : "text",
+                }}
                 placeholder="8 dígitos"
               />
             </label>
@@ -988,11 +993,17 @@ export default function App() {
                   setOfertaConsultada(null);
                   setResultado(null);
                 }}
-                style={inputStyle}
+                disabled={Boolean(ofertaConsultada)}
+                style={{
+                  ...inputStyle,
+                  background: ofertaConsultada ? "#f2f2f2" : "#fff",
+                  cursor: ofertaConsultada ? "not-allowed" : "pointer",
+                }}
                 required
               >
                 <option value="">Seleccione...</option>
-                <option value="Campo/Agencia">Campo/Agencia</option>
+                <option value="Campo">Campo</option>
+                <option value="Agencia">Agencia</option>
                 <option value="Base">Base</option>
                 <option value="Referido">Referido</option>
               </select>
@@ -1003,7 +1014,12 @@ export default function App() {
               <select
                 value={segmento}
                 onChange={(e) => setSegmento(e.target.value)}
-                style={inputStyle}
+                disabled={Boolean(ofertaConsultada)}
+                style={{
+                  ...inputStyle,
+                  background: ofertaConsultada ? "#f2f2f2" : "#fff",
+                  cursor: ofertaConsultada ? "not-allowed" : "pointer",
+                }}
               >
                 <option value="">Seleccione...</option>
                 {["VIP", "PREFERENTE", "NORMAL", "INCLUSION", "EVALUACION", "NA"].map(
@@ -1030,7 +1046,12 @@ export default function App() {
                 value={placa}
                 maxLength={6}
                 onChange={(e) => setPlaca(normalizePlate(e.target.value))}
-                style={inputStyle}
+                disabled={Boolean(ofertaConsultada)}
+                style={{
+                  ...inputStyle,
+                  background: ofertaConsultada ? "#f2f2f2" : "#fff",
+                  cursor: ofertaConsultada ? "not-allowed" : "text",
+                }}
                 placeholder="Ej. ATI219"
               />
             </label>
@@ -1043,7 +1064,12 @@ export default function App() {
                 value={marcaVehiculo}
                 onChange={(e) => setMarcaVehiculo(e.target.value.toUpperCase())}
                 onBlur={() => setMarcaVehiculo(marcaVehiculo.trim().toUpperCase())}
-                style={inputStyle}
+                disabled={Boolean(ofertaConsultada)}
+                style={{
+                  ...inputStyle,
+                  background: ofertaConsultada ? "#f2f2f2" : "#fff",
+                  cursor: ofertaConsultada ? "not-allowed" : "text",
+                }}
                 placeholder="Buscar marca..."
               />
               <datalist id="vehicle-brand-catalog">
@@ -1061,7 +1087,12 @@ export default function App() {
                 max={maxVehicleYear}
                 value={anioModelo}
                 onChange={(e) => setAnioModelo(e.target.value === "" ? "" : Number(e.target.value))}
-                style={inputStyle}
+                disabled={Boolean(ofertaConsultada)}
+                style={{
+                  ...inputStyle,
+                  background: ofertaConsultada ? "#f2f2f2" : "#fff",
+                  cursor: ofertaConsultada ? "not-allowed" : "text",
+                }}
                 placeholder="Seleccione año"
               />
             </label>
