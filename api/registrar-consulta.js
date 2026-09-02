@@ -33,7 +33,7 @@ export default async function handler(req, res) {
     userAgent: req.headers["user-agent"] || "",
   };
 
-  if (!["Campo/Agencia", "Base", "Referido"].includes(String(payload.origenConsulta || ""))) {
+  if (!["Campo", "Agencia", "Base", "Referido"].includes(String(payload.origenConsulta || ""))) {
     return res.status(400).json({ message: "Seleccione un origen de consulta válido." });
   }
 
