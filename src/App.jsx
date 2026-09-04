@@ -291,6 +291,7 @@ const VEHICLE_BRAND_GROUP = {
   "RAM": "Grupo 1",
   "SAIC WULING": "Grupo 2",
   "SWM": "Grupo 2",
+  "KINGSTAR": "Grupo 2",
   "VICTORY": "Grupo 2",
   "YUTONG": "Grupo 2",
   "BAIC YINXIANG": "Grupo 2",
