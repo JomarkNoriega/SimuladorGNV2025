@@ -298,6 +298,8 @@ const VEHICLE_BRAND_GROUP = {
   "BMW": "Grupo 1",
   "AUDI": "Grupo 1",
   "BAIC": "Grupo 2",
+  "JONWAY": "Grupo 2",
+  "CHANA": "Grupo 2",
   "AGRALE": "Grupo 1",
   "ASIA MOTORS": "Grupo 1",
   "AUTOCRAFT": "Grupo 1"
