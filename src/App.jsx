@@ -83,25 +83,25 @@ const FACTOR_TABLES = {
   ],
   PREFERENTE: [
     { cuotaMin: 0, factor: 0.5 },
-    { cuotaMin: 350, factor: 0.55 },
-    { cuotaMin: 385, factor: 0.6 },
-    { cuotaMin: 420, factor: 0.65 },
-    { cuotaMin: 455, factor: 0.7 },
-    { cuotaMin: 490, factor: 0.75 },
-    { cuotaMin: 525, factor: 0.8 },
-    { cuotaMin: 560, factor: 0.85 },
-    { cuotaMin: 595, factor: ">85%" },
+    { cuotaMin: 320, factor: 0.55 },
+    { cuotaMin: 352, factor: 0.6 },
+    { cuotaMin: 384, factor: 0.65 },
+    { cuotaMin: 416, factor: 0.7 },
+    { cuotaMin: 448, factor: 0.75 },
+    { cuotaMin: 480, factor: 0.8 },
+    { cuotaMin: 512, factor: 0.85 },
+    { cuotaMin: 544, factor: ">85%" },
   ],
   NORMAL: [
     { cuotaMin: 0, factor: 0.5 },
-    { cuotaMin: 350, factor: 0.55 },
-    { cuotaMin: 385, factor: 0.6 },
-    { cuotaMin: 420, factor: 0.65 },
-    { cuotaMin: 455, factor: 0.7 },
-    { cuotaMin: 490, factor: 0.75 },
-    { cuotaMin: 525, factor: 0.8 },
-    { cuotaMin: 560, factor: 0.85 },
-    { cuotaMin: 595, factor: ">85%" },
+    { cuotaMin: 280, factor: 0.55 },
+    { cuotaMin: 308, factor: 0.6 },
+    { cuotaMin: 336, factor: 0.65 },
+    { cuotaMin: 364, factor: 0.7 },
+    { cuotaMin: 392, factor: 0.75 },
+    { cuotaMin: 420, factor: 0.8 },
+    { cuotaMin: 448, factor: 0.85 },
+    { cuotaMin: 476, factor: ">85%" },
   ],
   EVALUACION: [
     { cuotaMin: 0, factor: 0.5 },
@@ -356,7 +356,7 @@ const OFFER_RULES = [
   { segmentos: ["NA"], edadMin: 21, edadMax: 25, grupos: ["Grupo 1", "Grupo 2", "TODOS"], montoMin: 500, montoMax: 500, plazoMin: 6, plazoMax: 6, factorOferta: 0.50, factorMaximo: 0.50 },
 ];
 
-const APP_VERSION = "2026.09.02.v1";
+const APP_VERSION = "2026.10.22.v1";
 
 const DNI_WEIGHTS = [3, 2, 7, 6, 5, 4, 3, 2];
 const DNI_NUMBER_MAP = "67890123456";
